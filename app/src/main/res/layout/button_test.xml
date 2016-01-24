@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    >
+
+    <ListView
+        android:id="@+id/lvChoices"
+        android:layout_above="@+id/btnDecide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+    <com.dd.CircularProgressButton
+        android:id="@+id/btnDecide"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:onClick="decide"
+        app:cpb_cornerRadius="48dp"
+        app:cpb_textComplete="Reset"
+        app:cpb_textIdle="Decide"
+        app:cpb_selectorIdle="@drawable/idle_state_selector"/>
+
+</RelativeLayout>
