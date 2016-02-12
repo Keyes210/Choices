@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="empty_list">Press + button to add choices</string>
+    <string name="drawer_header_text">Past Choices</string>
 </resources>

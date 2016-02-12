@@ -5,4 +5,8 @@
     <color name="bgColor">#AFCEE0</color>
     <color name="accentColor1">#125E3B</color>
     <color name="accentColor2">#BCA7C6</color>
+
+    <color name="primary">#013F96</color>
+    <color name="primary_dark">#3D7BA0</color>
+    <color name="accent">#BCA7C6</color>
 </resources>
