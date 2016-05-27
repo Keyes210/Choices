@@ -23,23 +23,23 @@
                 android:background="?attr/colorPrimary"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent" />
 
 
-            <TextView
+            <!--<TextView
                 android:id="@android:id/empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty_list" />
-
+-->
         </LinearLayout>
 
 
 
-        <com.dd.CircularProgressButton
+        <!--<com.dd.CircularProgressButton
             android:id="@+id/btnDecide"
             android:layout_width="match_parent"
             android:layout_height="64dp"
@@ -52,7 +52,21 @@
             app:cpb_cornerRadius="48dp"
             app:cpb_textComplete="Reset"
             app:cpb_textIdle="Decide"
-            app:cpb_selectorIdle="@drawable/idle_state_selector"/>
+            app:cpb_selectorIdle="@drawable/idle_state_selector"/>-->
+
+        <Button
+            android:id="@+id/btnDecide"
+            android:layout_width="match_parent"
+            android:background="@color/primaryColorDull"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="decide"
+            android:layout_alignParentBottom="true"
+            android:onClick="pressDecide"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_gravity="center"/>
 
 
     </RelativeLayout>

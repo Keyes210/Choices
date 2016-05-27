@@ -19,9 +19,11 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile "com.andkulikov:transitionseverywhere:1.6.2"
 }

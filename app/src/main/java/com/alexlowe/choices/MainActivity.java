@@ -7,6 +7,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
@@ -14,21 +16,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dd.CircularProgressButton;
+
+import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.extra.Scale;
 
 import java.util.ArrayList;
 import java.util.Random;
-/*1. set up search view - code in main activity adds input to listview
-* 2. setup listview, viewholder pattern with text and delete button
-* 3. setup decider button - chooses one item from the list
-* 4. set up nav drawer- arrow, drawerfragment*/
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,10 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputET;
 
     private ArrayList<Choice> choices = new ArrayList<>();
+    private ArrayList<Choice> tempList;
+    String selection = "";
     ChoiceAdapter adapter;
-    private CircularProgressButton btnDecide;
-
+    private Button btnDecide;
     private DrawerLayout mDrawerLayout;
+    RecyclerView rvChoices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +52,16 @@ public class MainActivity extends AppCompatActivity {
 
         setupToolbar();
 
-        btnDecide = (CircularProgressButton) findViewById(R.id.btnDecide);
+        btnDecide = (Button) findViewById(R.id.btnDecide);
 
 
-        ListView lvChoices = (ListView) findViewById(android.R.id.list);
-        TextView emptyText = (TextView)findViewById(android.R.id.empty);
-        lvChoices.setEmptyView(emptyText);
 
-        adapter = new ChoiceAdapter(this, choices);
-        lvChoices.setAdapter(adapter);
+        rvChoices = (RecyclerView) findViewById(android.R.id.list);
+        //TextView emptyText = (TextView)findViewById(android.R.id.empty);
+
+        adapter = new ChoiceAdapter(choices);
+        rvChoices.setAdapter(adapter);
+        rvChoices.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setupToolbar() {
@@ -97,13 +102,14 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String choice) {
-                    // send choice to listview
-                    addChoice(choice);
-                    // Reset SearchView
-                    searchView.clearFocus();
-                    searchView.setQuery("", false);
-                    searchView.setIconified(true);
-                    addItem.collapseActionView();
+                // send choice to listview
+                addChoice(choice);
+
+                // Reset SearchView
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                addItem.collapseActionView();
                 return true;
             }
 
@@ -133,11 +139,46 @@ public class MainActivity extends AppCompatActivity {
 
     private void addChoice(String choiceText){
         Choice choice = new Choice(choiceText);
-        choices.add(choice);
-        adapter.notifyDataSetChanged();
+        choices.add(0, choice);
+        adapter.notifyItemInserted(0);
     }
 
-    /*public void decide(View view) {
+    public void pressDecide(View view) {
+        if(btnDecide.getText().equals("decide")){
+            decide();
+        }else{
+            tryAgain();
+        }
+    }
+
+    private void tryAgain() {
+        clearData();
+        for (Choice choice : tempList){
+            choices.add(0, choice);
+            adapter.notifyItemInserted(0);
+        }
+        btnDecide.setText("decide");
+    }
+
+
+    public void decide() {
+        cloneList(choices);
+
+        chooseRandomItem();
+        clearData();
+
+        btnDecide.setText("Try Again?");
+        showChoice();
+    }
+
+    private void cloneList(ArrayList<Choice> originalList){
+        tempList = new ArrayList<>(originalList.size());
+        for(Choice choice : originalList){
+            tempList.add(new Choice(choice));
+        }
+    }
+
+    private void chooseRandomItem(){
         int pool = choices.size();
         Log.i(TAG, "pool: " + pool);
 
@@ -145,32 +186,30 @@ public class MainActivity extends AppCompatActivity {
         int pick = r.nextInt(pool);
         Log.i(TAG, "pick: " + pick);
 
-        String choice = choices.get(pick);
-        Log.i(TAG, "choice: " + choice);
+        selection = choices.get(pick).getChoiceText();
 
-        for(int i = 0; i < pool; i++){
-            if(!choices.get(i).equals(choice)){
-                choices.remove(i);
-            }
+    }
+
+    public void clearData() {
+        int size = choices.size();
+        choices.clear();
+        adapter.notifyItemRangeRemoved(0, size);
+    }
+
+    private void showChoice() {
+        Choice choice = new Choice(selection);
+        choices.add(choice);
+    }
+
+
+    private void showContents(ArrayList<Choice> list, String name){
+        String results = "";
+
+        for (Choice choice : list) {
+            results += choice.getChoiceText() + "\n";
         }
 
-        adapter.notifyDataSetChanged();
-    }*/
-
-    public void decide(View view) {
-        btnDecide.setProgress(100);
-
-        int pool = choices.size();
-        Log.i(TAG, "pool: " + pool);
-
-        Random r = new Random();
-        int pick = r.nextInt(pool);
-        Log.i(TAG, "pick: " + pick);
-
-        for (int i = 0; i < pool; i++){
-            if(i == pick){
-
-            }
-        }
+        Log.d(TAG, "name :" + name);
+        Log.d(TAG, results);
     }
 }

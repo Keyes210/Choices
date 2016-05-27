@@ -1,55 +1,73 @@
 package com.alexlowe.choices;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dd.CircularProgressButton;
+
+import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.extra.Scale;
 
 import java.util.ArrayList;
 
 /**
  * Created by dell on 1/24/2016.
  */
-public class ChoiceAdapter extends ArrayAdapter<Choice> {
+public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder> {
     private ArrayList<Choice> choices;
 
-    public ChoiceAdapter(Context context, ArrayList<Choice> list) {
-        super(context, 0, list);
+    public ChoiceAdapter(ArrayList<Choice> list) {
         this.choices = list;
     }
 
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        // Inflate the custom layout
+        View choiceView = inflater.inflate(R.layout.choice_item, parent, false);
+
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(choiceView);
+        return viewHolder;
+    }
+
+
+    @Override
+    public void onBindViewHolder(ChoiceAdapter.ViewHolder holder, int position) {
         Choice choice = choices.get(position);
 
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = (LayoutInflater) getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.choice_item, parent, false);
+        Button button = holder.choiceButton;
+        button.setText(choice.getChoiceText());
 
-            viewHolder.choiceButton = (CircularProgressButton) convertView.findViewById(R.id.itemChoice);
+    }
 
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+    @Override
+    public int getItemCount() {
+        return choices.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+       public Button choiceButton;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            choiceButton = (Button)itemView.findViewById(R.id.itemChoice);
+
         }
 
-        viewHolder.choiceButton.setText(choice.getChoiceText());
-        viewHolder.choiceButton.setIdleText(choice.getChoiceText());
-
-        return convertView;
     }
 
-    static class ViewHolder {
-       CircularProgressButton choiceButton;
-    }
 
 
 }

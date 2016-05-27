@@ -11,6 +11,11 @@ public class Choice {
         this.choiceText = choiceText;
     }
 
+    public Choice(Choice choice){
+        this.choiceText = choice.getChoiceText();
+        this.isSelected = choice.getSelected();
+    }
+
     public String getChoiceText() {
         return choiceText;
     }
@@ -19,7 +24,7 @@ public class Choice {
         this.choiceText = choiceText;
     }
 
-    public boolean isSelected() {
+    public boolean getSelected() {
         return isSelected;
     }
 
