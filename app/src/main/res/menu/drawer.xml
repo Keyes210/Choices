@@ -3,24 +3,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_item_attachment"
-            android:checked="true"
-            android:title="attachment" />
+            android:id="@+id/navigation_item_chooser"
+            android:title="Chooser" />
         <item
-            android:id="@+id/navigation_item_images"
-            android:title="images" />
+            android:id="@+id/navigation_item_randnum"
+            android:title="Random Number Generator" />
         <item
-            android:id="@+id/navigation_item_location"
-            android:title="location" />
+            android:id="@+id/navigation_item_saves"
+            android:title="Saved Choice Lists" />
     </group>
 
-    <item android:title="sub_menu">
-        <menu>
-            <item
-                android:title="sub_menu_item01" />
-            <item
-                android:title="sub_menu_item02" />
-        </menu>
-    </item>
 
 </menu>

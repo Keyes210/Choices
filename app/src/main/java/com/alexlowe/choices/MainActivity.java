@@ -1,10 +1,12 @@
 package com.alexlowe.choices;
 
+import android.content.DialogInterface;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,18 +18,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.extra.Scale;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -35,55 +30,37 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "rimjob";
-    private EditText inputET;
 
-    private ArrayList<Choice> choices = new ArrayList<>();
-    private ArrayList<Choice> tempList;
-    String selection = "";
-    ChoiceAdapter adapter;
     private Button btnDecide;
-    private DrawerLayout mDrawerLayout;
-    RecyclerView rvChoices;
+    private RecyclerView rvChoices;
+
+    private ArrayList<Choice> mChoices = new ArrayList<>();
+    private ArrayList<Choice> tempList;
+    String mSelection = "";
+    ChoiceAdapter mChoiceAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupToolbar();
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        ViewMaster viewMaster = new ViewMaster(this, this);
+        viewMaster.setupToolbar(toolbar, drawerLayout, navigationView);
 
         btnDecide = (Button) findViewById(R.id.btnDecide);
 
-
-
         rvChoices = (RecyclerView) findViewById(android.R.id.list);
-        //TextView emptyText = (TextView)findViewById(android.R.id.empty);
 
-        adapter = new ChoiceAdapter(choices);
-        rvChoices.setAdapter(adapter);
+        mChoiceAdapter = new ChoiceAdapter(mChoices);
+        rvChoices.setAdapter(mChoiceAdapter);
         rvChoices.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void setupToolbar() {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String choice) {
+                btnDecide.setText("decide");
                 // send choice to listview
                 addChoice(choice);
 
@@ -129,23 +107,44 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.action_add:
                 return true;
+            case R.id.action_clear:
+                toolbarClear();
+                return true;
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void toolbarClear() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Clear List");
+        builder.setMessage("Are you sure you want to clear this list?");
+        builder.setPositiveButton("Clear", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                clearData();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
+    }
+
     private void addChoice(String choiceText){
         Choice choice = new Choice(choiceText);
-        choices.add(0, choice);
-        adapter.notifyItemInserted(0);
+        mChoices.add(0, choice);
+        mChoiceAdapter.notifyItemInserted(0);
     }
 
     public void pressDecide(View view) {
         if(btnDecide.getText().equals("decide")){
-            decide();
+            if(mChoices.size() > 1){
+                decide();
+            }else {
+                Toast.makeText(this, "You must choose more than one item to make a decision",
+                        Toast.LENGTH_SHORT).show();
+            }
         }else{
             tryAgain();
         }
@@ -154,15 +153,15 @@ public class MainActivity extends AppCompatActivity {
     private void tryAgain() {
         clearData();
         for (Choice choice : tempList){
-            choices.add(0, choice);
-            adapter.notifyItemInserted(0);
+            mChoices.add(0, choice);
+            mChoiceAdapter.notifyItemInserted(0);
         }
         btnDecide.setText("decide");
     }
 
 
     public void decide() {
-        cloneList(choices);
+        cloneList(mChoices);
 
         chooseRandomItem();
         clearData();
@@ -179,26 +178,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chooseRandomItem(){
-        int pool = choices.size();
+        int pool = mChoices.size();
         Log.i(TAG, "pool: " + pool);
 
         Random r = new Random();
         int pick = r.nextInt(pool);
         Log.i(TAG, "pick: " + pick);
 
-        selection = choices.get(pick).getChoiceText();
+        mSelection = mChoices.get(pick).getChoiceText();
 
     }
 
     public void clearData() {
-        int size = choices.size();
-        choices.clear();
-        adapter.notifyItemRangeRemoved(0, size);
+        int size = mChoices.size();
+        mChoices.clear();
+        mChoiceAdapter.notifyItemRangeRemoved(0, size);
+        btnDecide.setText("decide");
     }
 
     private void showChoice() {
-        Choice choice = new Choice(selection);
-        choices.add(choice);
+        Choice choice = new Choice(mSelection);
+        mChoices.add(choice);
     }
 
 
@@ -211,5 +211,14 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "name :" + name);
         Log.d(TAG, results);
+    }
+
+    public void saveChoices(){
+        if(mChoices.size() > 1){
+            ChoiceList choiceList = new ChoiceList(mChoices);
+            ChoiceList.masterList.add(choiceList);
+        }else {
+            Toast.makeText(this, "You must choose more than one item to save", Toast.LENGTH_SHORT).show();
+        }
     }
 }

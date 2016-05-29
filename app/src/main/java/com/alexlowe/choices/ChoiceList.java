@@ -1,31 +1,36 @@
 package com.alexlowe.choices;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Keyes on 5/25/2016.
  */
 public class ChoiceList {
-    private String name = "";
-    private ArrayList<Choice> choices;
+    private String mName = "";
+    private ArrayList<Choice> mChoices;
+    private Date mDate;
 
-    public ChoiceList(){
-        choices = new ArrayList<>();
+    public static ArrayList<ChoiceList> masterList;
+
+    public ChoiceList(ArrayList<Choice> choices){
+        mChoices = new ArrayList<>();
+        this.mDate = new Date();
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.mName = name;
     }
 
     public ArrayList<Choice> getChoices() {
-        return choices;
+        return mChoices;
     }
 
     public void setChoices(ArrayList<Choice> choices) {
-        this.choices = choices;
+        this.mChoices = choices;
     }
 }
