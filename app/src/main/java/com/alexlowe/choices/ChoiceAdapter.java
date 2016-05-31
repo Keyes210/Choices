@@ -2,18 +2,11 @@ package com.alexlowe.choices;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.extra.Scale;
 
 import java.util.ArrayList;
 
@@ -27,27 +20,31 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
         this.choices = list;
     }
 
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        // Inflate the custom layout
         View choiceView = inflater.inflate(R.layout.choice_item, parent, false);
 
-        // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(choiceView);
         return viewHolder;
     }
 
 
     @Override
-    public void onBindViewHolder(ChoiceAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final ChoiceAdapter.ViewHolder holder, final int position) {
         Choice choice = choices.get(position);
 
-        Button button = holder.choiceButton;
-        button.setText(choice.getChoiceText());
+        holder.itemText.setText(choice.getChoiceText());
+        holder.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choices.remove(holder.getAdapterPosition());
+                notifyItemRemoved(holder.getAdapterPosition());
+                notifyItemRangeChanged(holder.getAdapterPosition(), choices.size());
+            }
+        });
 
     }
 
@@ -57,17 +54,17 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-       public Button choiceButton;
+        public TextView itemText;
+        public ImageView close;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            choiceButton = (Button)itemView.findViewById(R.id.itemChoice);
-
+            itemText = (TextView) itemView.findViewById(R.id.itemText);
+            close = (ImageView) itemView.findViewById(R.id.close);
         }
 
     }
-
 
 
 }

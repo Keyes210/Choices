@@ -1,21 +1,15 @@
 package com.alexlowe.choices;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.Random;
 
@@ -28,7 +22,7 @@ public class RandomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -44,7 +38,6 @@ public class RandomActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_general, menu);
@@ -55,7 +48,7 @@ public class RandomActivity extends AppCompatActivity {
         int min = Integer.valueOf(etMin.getText().toString());
         int max = Integer.valueOf(etMax.getText().toString());
 
-        if(min >= max) {
+        if (min >= max) {
             max = min + 1;
             etMax.setText(String.valueOf(max));
         }
@@ -65,4 +58,5 @@ public class RandomActivity extends AppCompatActivity {
 
         tvResult.setText(String.valueOf(result));
     }
+
 }

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#013F96</color>
+    <color name="primaryColor">#50013F96</color>
     <color name="primaryColorDull">#3D7BA0</color>
     <color name="bgColor">#AFCEE0</color>
-    <color name="accentColor1">#125E3B</color>
-    <color name="accentColor2">#BCA7C6</color>
+    <color name="trans">#0FFF</color>
 
     <color name="primary">#013F96</color>
     <color name="primary_dark">#3D7BA0</color>
     <color name="accent">#BCA7C6</color>
-    <color name="mb_red">#ffff4444</color>
-    <color name="mb_red_dark">#ffcd3a3a</color>
 </resources>

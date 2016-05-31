@@ -25,6 +25,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <android.support.v7.widget.RecyclerView
             android:id="@android:id/list"
+            android:layout_above="@+id/btnDecide"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -33,15 +34,15 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
             android:id="@+id/btnDecide"
             android:layout_width="match_parent"
             android:background="@color/primaryColorDull"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="60dp"
+            android:layout_margin="4dp"
             android:text="decide"
             android:layout_alignParentBottom="true"
             android:onClick="pressDecide"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            style="?attr/borderlessButtonStyle"/>
 
 
     </RelativeLayout>

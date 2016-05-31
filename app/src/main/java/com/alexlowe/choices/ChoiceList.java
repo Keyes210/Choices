@@ -1,20 +1,23 @@
 package com.alexlowe.choices;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Keyes on 5/25/2016.
  */
-public class ChoiceList {
-    private String mName = "";
+public class ChoiceList implements Serializable{
+    private String mName;
     private ArrayList<Choice> mChoices;
     private Date mDate;
 
-    public static ArrayList<ChoiceList> masterList;
 
-    public ChoiceList(ArrayList<Choice> choices){
-        mChoices = new ArrayList<>();
+    public ChoiceList(String name, ArrayList<Choice> choices) {
+        this.mName = name;
+        mChoices = choices;
         this.mDate = new Date();
     }
 
@@ -32,5 +35,14 @@ public class ChoiceList {
 
     public void setChoices(ArrayList<Choice> choices) {
         this.mChoices = choices;
+    }
+
+    public String getDate() {
+        SimpleDateFormat s = new SimpleDateFormat("d MMM, yyyy", Locale.getDefault());
+        return s.format(mDate);
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
     }
 }

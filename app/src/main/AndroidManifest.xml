@@ -20,11 +20,13 @@
         </activity>
         <activity
             android:name=".RandomActivity"
+            android:noHistory="true"
             android:label="Random Number Generator"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".SavesActivity"
                   android:label="Past Choices"
+                  android:noHistory="true"
                   android:screenOrientation="portrait">
         </activity>
     </application>
