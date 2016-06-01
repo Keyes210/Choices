@@ -1,5 +1,5 @@
 # Choices
-ORIGNAL, complete. A decider; slightly better than a coin flip.
+ORIGINAL, complete. A decider; slightly better than a coin flip.
 
 
 Choices is a decision maker. I often find myself confronted with trivial decisions. What am I going to get for lunch? Which TV show am I going to try? What movie from my ever-growing Netflix queue am I going to finally watch. It’s nice to take these things out of my hands, and not think about them. That’s what Choices does.
