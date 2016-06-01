@@ -119,9 +119,9 @@ public class ViewMaster {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.length() > 24) {
-                    displayToast("Choices must be under 25 characters");
-                    searchView.setQuery(newText.substring(0, 24), false);
+                if (newText.length() > 26) {
+                    displayToast("Choices must be under 26 characters");
+                    searchView.setQuery(newText.substring(0, 26), false);
                 }
                 return false;
             }
@@ -172,6 +172,7 @@ public class ViewMaster {
 
     private void validateInput(AlertDialog dialog, final EditText input) {
         final Button button = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        final int defaultColor = button.getCurrentTextColor();
         button.setEnabled(false);
         input.addTextChangedListener(new TextWatcher() {
                                          @Override
@@ -183,12 +184,13 @@ public class ViewMaster {
                                              // my validation condition
                                              if (input.getText().length() > 0) {
                                                  button.setEnabled(true);
-                                                 if (input.getText().length() > 30) {
-                                                     displayToast("Names must be less than 25 characters");
-                                                     button.setTextColor(Color.RED);
+                                                 if (input.getText().length() > 26) {
+                                                     displayToast("Names must be less than 26 characters");
                                                      button.setEnabled(false);
+                                                     button.setTextColor(Color.RED);
                                                  } else {
                                                      button.setEnabled(true);
+                                                     button.setTextColor(defaultColor);
                                                  }
                                              } else {
                                                  button.setEnabled(false);

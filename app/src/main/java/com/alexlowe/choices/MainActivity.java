@@ -60,20 +60,16 @@ public class MainActivity extends AppCompatActivity {
         rvChoices.setLayoutManager(new LinearLayoutManager(this));
 
         if(getIntent().getSerializableExtra(KEY_CL) != null){
-            retrievePastChoiceList();
+            ChoiceList cl = (ChoiceList) getIntent().getSerializableExtra(KEY_CL);
+            retrievePastChoiceList(cl.getChoices());
         }else if(Choice.gChoice != null){
-            clearData();
-            for (Choice choice : Choice.gChoice) {
-                mChoices.add(0, choice);
-                mChoiceAdapter.notifyItemInserted(0);
-            }
+            retrievePastChoiceList(Choice.gChoice);
         }
     }
 
-    private void retrievePastChoiceList() {
-        ChoiceList cl = (ChoiceList) getIntent().getSerializableExtra(KEY_CL);
+    private void retrievePastChoiceList(ArrayList<Choice> choices) {
         clearData();
-        for (Choice choice : cl.getChoices()) {
+        for (Choice choice : choices) {
             mChoices.add(0, choice);
             mChoiceAdapter.notifyItemInserted(0);
         }
