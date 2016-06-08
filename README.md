@@ -58,7 +58,7 @@ For both the list of choices and the list of ChoiceLists, users can delete items
 <br/>
 <br/>
 <br/>
-<b>I also documented the process of making this app on my blog:</b>
+<b> I've also documented the process of making this app on my blog:</b>
 <br/>
 <a href="https://medium.com/@keyes210/choices-i-63942c0184eb#.9602mgxf3">Part 1</a>
 <br/>
